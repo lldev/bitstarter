@@ -25,11 +25,27 @@
 // -
 // https://developer.mozilla.org/en-US/docs/JSON#JSON_in_Firefox_2
 
+var sys = require('util');
 var fs = require('fs');
 var program = require('commander');
 var cheerio = require('cheerio');
+var restler = require('restler');
 var HTMLFILE_DEFAULT = "index.html";
+var URLFILE_DEFAULT = "http://polar-wave-3770.herokuapp.com/";
 var CHECKSFILE_DEFAULT = "checks.json";
+
+var assertUrlExists = function(url) {
+  /* console.log(url);  */
+  restler.get(url).on('complete', function(result) {
+	if (result instanceof Error) {
+	  sys.puts('Error: ' + result.message);
+	  this.retry(5000); // try again after 5 sec
+	} else {
+	  var instr = result.toString();
+	  return instr;
+	}
+  });
+};
 
 var assertFileExists = function(infile) {
   var instr = infile.toString();
@@ -75,6 +91,10 @@ if(require.main == module) {
 		'Path to index.html',
 		clone(assertFileExists),
 		HTMLFILE_DEFAULT)
+	.option('-u, --url <html_url>',
+		'Url to index.html',
+		clone(assertUrlExists),
+		URLFILE_DEFAULT)
 	.parse(process.argv);
   var checkJson =
 	checkHtmlFile(program.file,
