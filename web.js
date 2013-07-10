@@ -2,9 +2,9 @@ var express = require('express');
 var fs = require('fs');
 require('buffer');
 
-var file = fs.readFileSync('index.html', function(err, data) {
+var file = fs.readFileSync('./index.html', {encoding: 'utf8'}, function(err, data) {
 	if (err) throw err;
-		console.log(data);
+	console.log(data);
 });
 
 var buffer = new Buffer(file, "utf8");
