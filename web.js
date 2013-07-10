@@ -7,13 +7,16 @@ var file = fs.readFileSync('./index.html', {encoding: 'utf8'}, function(err, dat
 	console.log(data);
 });
 
+console.log(file);
+
 var buffer = new Buffer(file, "utf8");
-buffer = buffer.toString('utf8');
+
+console.log(buffer);
 
 var app = express.createServer(express.logger());
 
 app.get('/', function(request, response) {
-  response.send(buffer);
+  response.send(buffer.toString('utf8'));
 });
 
 var port = process.env.PORT || 5000;
