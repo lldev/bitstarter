@@ -7,8 +7,8 @@ var file = fs.readFileSync('index.html', function(err, data) {
 		console.log(data);
 });
 
-var buffer = new Buffer(file, "utf-8");
-buffer = buffer.toString('utf-8');
+var buffer = new Buffer(file, "utf8");
+buffer = buffer.toString('utf8');
 
 var app = express.createServer(express.logger());
 
